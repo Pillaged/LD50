@@ -44,7 +44,7 @@ def draw_window(window):
     pygame.display.update()
 
 
-def load_freeky_head():
+def load_freaky_head():
     img = asset_manager.load_image("assets/head.png")
     screen = pygame.display.get_surface()
     screen.fill((0, 100, 0, 0))
