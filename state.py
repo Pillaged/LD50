@@ -1,5 +1,8 @@
+import inspect
 import logging
 import os
+import sys
+from importlib import import_module
 
 import pygame
 
@@ -40,6 +43,15 @@ class State:
     def startup(self, **kwargs):
         pass
 
+    def resume(self):
+        pass
+
+    def pause(self):
+        pass
+
+    def cleanup(self):
+        pass
+
 class StateManager:
 
     def __init__(self):
@@ -65,11 +77,6 @@ class StateManager:
                 self.register_state(state)
 
     def register_state(self, state):
-        """ Add a state class
-
-        :param state: any subclass of core.state.State
-        :returns: None
-        """
         name = state.__name__
         logger.debug("loading state: {}".format(state.__name__))
         self._state_dict[name] = state
@@ -77,12 +84,6 @@ class StateManager:
     @staticmethod
     def collect_states_from_module(import_name):
         """ Given a module, return all classes in it that are a game state
-
-        Abstract Base Classes, those whose metaclass is abc.ABCMeta, will
-        not be included in the state dictionary.
-
-        :param import_name: Name of module
-        :rtype: collections.Iterable[State]
         """
         classes = inspect.getmembers(sys.modules[import_name], inspect.isclass)
 
@@ -92,10 +93,6 @@ class StateManager:
 
     def collect_states_from_path(self, folder):
         """ Load a state from disk, but do not register it
-
-        :param folder: folder to load from
-        :returns: Generator of instanced states
-        :rtype: collections.Iterable[Class]
         """
         try:
             import_name = self.package + '.' + folder
@@ -152,10 +149,6 @@ class StateManager:
             logger.critical("Attempted to pop state when state was not active.")
             raise RuntimeError
 
-        if index == 0:
-            logger.debug("resetting controls due to state change")
-            self.release_controls()
-
         try:
             previous = self._state_stack.pop(index)
         except IndexError:
@@ -170,9 +163,7 @@ class StateManager:
         elif index and self._state_stack:
             pass
         else:
-            # TODO: make API for quiting the app main loop
             self.done = True
-            self._wants_to_exit = True
 
     def push_state(self, state_name, **kwargs):
         """ Pause currently running state and start new one.
@@ -219,9 +210,6 @@ class StateManager:
     @property
     def state_name(self):
         """ Name of state currently running
-
-        TODO: phase this out?
-
         :returns: string
         :rtype: String
         """
