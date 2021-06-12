@@ -6,7 +6,7 @@ from importlib import import_module
 
 import pygame
 
-import prepare
+from app import prepare
 
 logger = logging.getLogger(__name__)
 
@@ -52,17 +52,19 @@ class State:
     def cleanup(self):
         pass
 
+
 class StateManager:
 
     def __init__(self):
         self.done = False
         self.current_time = 0.0
-        self.package = ""
+        self.package = "app.states"
         self._state_queue = list()
         self._state_stack = list()
         self._state_dict = dict()
         self._state_resume_set = set()
         self._remove_queue = list()
+
 
     def auto_state_discovery(self):
         """ Scan a folder, load states found in it, and register them
@@ -86,7 +88,6 @@ class StateManager:
         """ Given a module, return all classes in it that are a game state
         """
         classes = inspect.getmembers(sys.modules[import_name], inspect.isclass)
-
         for c in (i[1] for i in classes):
             if issubclass(c, State):
                 yield c
@@ -96,6 +97,7 @@ class StateManager:
         """
         try:
             import_name = self.package + '.' + folder
+            print(import_name)
             import_module(import_name)
             yield from self.collect_states_from_module(import_name)
         except Exception as e:
@@ -178,8 +180,6 @@ class StateManager:
             raise RuntimeError
 
         previous = self.current_state
-        logger.debug("resetting controls due to state change")
-        self.release_controls()
 
         if previous is not None:
             previous.pause()

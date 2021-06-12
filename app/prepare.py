@@ -10,7 +10,7 @@ BASEDIR = sys.path[0]
 USER_GAME_DIR = os.path.join(os.path.expanduser("~"), ".antfive")
 
 # game data dir
-USER_GAME_ASSETS_DIR = os.path.join(USER_GAME_DIR, "assets")
+USER_GAME_ASSETS_DIR = os.path.join(USER_GAME_DIR, "../assets")
 
 # game data dir
 USER_GAME_DATA_DIR = os.path.join(USER_GAME_DIR, "data")
