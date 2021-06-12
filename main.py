@@ -6,7 +6,7 @@ import pytmx
 
 import asset_manager
 
-WIDTH, HEIGHT = 600, 400
+WIDTH, HEIGHT = 1920, 1600
 BACKGROUND_COLOR = (255, 0, 255)  # RGB
 TILE_MAP = "level1.tmx"
 FPS = 60
@@ -41,8 +41,9 @@ def load_freeky_head():
 
 
 def main():
-    tile_map_data = asset_manager.load_tile_map(os.path.join(os.getcwd(), "Assets", TILE_MAP))
+    # tile_map_data = asset_manager.load_tile_map(os.path.join(os.getcwd(), "Assets", TILE_MAP))
     window = pygame.display.set_mode((WIDTH, HEIGHT))
+    tile_map_data = pytmx.load_pygame(os.path.join(os.getcwd(), "Assets", TILE_MAP))
     pygame.display.set_caption("First Game!")
     clock = pygame.time.Clock()
     pygame.init()
@@ -54,7 +55,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        load_freeky_head()
+        # load_freeky_head()
+        for layer in tile_map_data.visible_layers:
+            for x, y, gid, in layer:
+                tile = tile_map_data.get_tile_image_by_gid(gid)
+                if tile is not None:
+                    window.blit(tile, (x * tile_map_data.tilewidth, y * tile_map_data.tileheight))
         pygame.display.update()
     pygame.quit()
 
