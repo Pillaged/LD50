@@ -3,7 +3,7 @@ import logging
 
 from pytmx import pytmx
 
-import prepare
+import app.prepare as prepare
 from pygame import mixer
 
 logger = logging.getLogger(__name__)
