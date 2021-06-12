@@ -1,2 +1,3 @@
 # GMTK2021-Ants
-Go Bears
+## Installation
+This project uses PyGame and Pytmx.
