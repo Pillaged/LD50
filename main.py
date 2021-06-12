@@ -4,6 +4,8 @@ from asset_manager import load_image
 import os
 import pytmx
 
+import asset_manager
+
 WIDTH, HEIGHT = 600, 400
 BACKGROUND_COLOR = (255, 0, 255)  # RGB
 TILE_MAP = "level1.tmx"
@@ -15,31 +17,36 @@ def draw_window(window):
     pygame.display.update()
 
 
-def load_tile_map(tile_map):
-    global image, WIDTH, HEIGHT
-    asset_path = os.path.join(os.getcwd(), "Assets", tile_map)
-    print(asset_path)
+# def load_tile_map(tile_map):
+#     global image, WIDTH, HEIGHT
+#     asset_path = os.path.join(os.getcwd(), "Assets", tile_map)
+#     print(asset_path)
+#
+#     tmxdata = pytmx.load_pygame(asset_path, pixelalpha=True)
+#     WIDTH, HEIGHT = tmxdata.width * tmxdata.tilewidth, tmxdata.height * tmxdata.tileheight
+#     ti = tmxdata.get_tile_image_by_gid
+#     for layer in tmxdata.visible_layers:
+#         if isinstance(layer, pytmx.TiledTileLayer):
+#             for x, y, gid, in layer:
+#                 tile = ti(gid)
+#                 if tile:
+#                     image = tmxdata.get_tile_image(x, y, layer)
 
-    tmxdata = pytmx.load_pygame(asset_path, pixelalpha=True)
-    WIDTH, HEIGHT = tmxdata.width * tmxdata.tilewidth, tmxdata.height * tmxdata.tileheight
-    ti = tmxdata.get_tile_image_by_gid
-    for layer in tmxdata.visible_layers:
-        if isinstance(layer, pytmx.TiledTileLayer):
-            for x, y, gid, in layer:
-                tile = ti(gid)
-                if tile:
-                    image = tmxdata.get_tile_image(x, y, layer)
+
+def load_freeky_head():
+    img = load_image("assets/head.png")
+    screen = pygame.display.get_surface()
+    screen.fill((0, 100, 0, 0))
+    screen.blit(img, (0, 0))
 
 
 def main():
-    # load_tile_map(TILE_MAP)
+    tile_map_data = asset_manager.load_tile_map(os.path.join(os.getcwd(), "Assets", TILE_MAP))
     window = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("First Game!")
     clock = pygame.time.Clock()
     pygame.init()
-    screen = pygame.display.get_surface()
     run = True
-    img = load_image("assets/head.png")
     draw_window(window)
 
     while run:
@@ -47,8 +54,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        screen.fill((0, 100, 0, 0))
-        screen.blit(img, (0,0))
+        load_freeky_head()
         pygame.display.update()
     pygame.quit()
 
