@@ -20,7 +20,6 @@ def transform_resource_filename(*filename):
 def load_image(filename):
     """ Load image from the resources folder
     """
-
     filename = transform_resource_filename(filename)
     return pygame.image.load(filename)
 

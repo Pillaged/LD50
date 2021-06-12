@@ -68,7 +68,6 @@ class StateManager:
         self._state_resume_set = set()
         self._remove_queue = list()
 
-
     def auto_state_discovery(self):
         """ Scan a folder, load states found in it, and register them
         """
