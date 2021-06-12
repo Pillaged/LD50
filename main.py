@@ -1,6 +1,6 @@
 import pygame
 
-from asset_manager import load_image
+# from asset_manager import load_image
 import os
 import pytmx
 import asset_manager
@@ -33,14 +33,21 @@ def draw_window(window):
 
 
 def load_freeky_head():
-    img = load_image("assets/head.png")
+    img = asset_manager.load_image("assets/head.png")
     screen = pygame.display.get_surface()
     screen.fill((0, 100, 0, 0))
     screen.blit(img, (0, 0))
 
 
+def render_tile_map(tile_map_data, window):
+    for layer in tile_map_data.visible_layers:
+        for x, y, gid, in layer:
+            tile = tile_map_data.get_tile_image_by_gid(gid)
+            if tile is not None:
+                window.blit(tile, (x * tile_map_data.tilewidth, y * tile_map_data.tileheight))
+
+
 def main():
-    # tile_map_data = asset_manager.load_tile_map(os.path.join(os.getcwd(), "Assets", TILE_MAP))
     window = pygame.display.set_mode((WIDTH, HEIGHT))
     tile_map_data = pytmx.load_pygame(os.path.join(os.getcwd(), "Assets", TILE_MAP))
 
@@ -55,12 +62,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        # load_freeky_head()
-        for layer in tile_map_data.visible_layers:
-            for x, y, gid, in layer:
-                tile = tile_map_data.get_tile_image_by_gid(gid)
-                if tile is not None:
-                    window.blit(tile, (x * tile_map_data.tilewidth, y * tile_map_data.tileheight))
+
+        render_tile_map(tile_map_data, window)
         pygame.display.update()
     pygame.quit()
 
