@@ -34,7 +34,7 @@ class Client(StateManager):
 
     def main(self):
         """ Initiates the main game loop. Since we are using Asteria networking
-        to handle network events, we pass this core.session.Client instance to
+        to handle network events, we pass this core.session. Client instance to
         networking which in turn executes the "main_loop" method every frame.
         This leaves the networking component responsible for the main loop.
 
