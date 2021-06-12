@@ -10,11 +10,15 @@ class MenuState(State):
     def process_event(self, event):
         if event.button == Button.QUIT or (event.button == Button.ESCAPE and event.pressed):
             self.client.done = True
+            menu_shutdown_music = app.asset_manager.load_audio(os.path.join("assets", "menu_shutdown.mp3"))
+            mixer.music.stop()
+            menu_shutdown_music.play()
+            time.sleep(2)
 
         if event.button == Button.INTERACT:
             menu_music = app.asset_manager.load_audio(os.path.join("assets", "menu_click.mp3"))
             menu_music.play()
-            time.sleep(1)
+            time.sleep(.7)
             self.client.push_state("MenuState")
             self.client.pop_state("WorldState")
 
