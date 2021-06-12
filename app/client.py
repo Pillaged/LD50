@@ -21,29 +21,14 @@ class Client(StateManager):
         :rtype: None
         """
         super(Client, self).__init__()
-        # Set up our game's configuration from the prepare module.
-        #self.config = prepare.CONFIG
-
         # INFO: no need to call superclass for now
         self.screen = pg.display.get_surface()
         self.caption = caption
 
-        #self.fps = self.config.fps
         self.fps = 60
-        #self.show_fps = self.config.show_fps
 
         # Set up a variable that will keep track of currently playing music.
         self.current_music = {"status": "stopped", "song": None, "previoussong": None}
-
-        # Set up the command line. This provides a full python shell for
-        # troubleshooting. You can view and manipulate any variables in
-        # the game.
-        #self.exit = False  # Allow exit from the CLI
-        #if self.config.cli:
-        #    self.cli = cli.CommandLine(self)
-
-        # Set up rumble support for gamepads
-
 
     def main(self):
         """ Initiates the main game loop. Since we are using Asteria networking
@@ -77,7 +62,7 @@ class Client(StateManager):
                 flip()
                 frames += 1
 
-            #Need to pump event queue for some reason
+            # Need to pump event queue for some reason
             for event in pygame.event.get():
                 pass
 
@@ -89,7 +74,6 @@ class Client(StateManager):
         """
         # Update the game engine
         self.update_states(time_delta)
-
 
     def update_states(self, dt):
         """ Checks if a state is done or has called for a game quit.
@@ -134,13 +118,9 @@ class Client(StateManager):
             state.draw(surface)
 
     def handle_fps(self, clock_tick, fps_timer, frames):
-        #if self.show_fps:
-        if True:
-            fps_timer += clock_tick
-            if fps_timer >= 1:
-                with_fps = "{} - {:.2f} FPS".format(self.caption, frames / fps_timer)
-                pg.display.set_caption(with_fps)
-                return 0, 0
-            return fps_timer, frames
-        return 0, 0
-
+        fps_timer += clock_tick
+        if fps_timer >= 1:
+            with_fps = "{} - {:.2f} FPS".format(self.caption, frames / fps_timer)
+            pg.display.set_caption(with_fps)
+            return 0, 0
+        return fps_timer, frames
