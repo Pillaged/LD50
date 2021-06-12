@@ -5,10 +5,38 @@ import os
 import pytmx
 import asset_manager
 
-WIDTH, HEIGHT = 1920, 1600
+WIDTH, HEIGHT = 1000, 800
 BACKGROUND_COLOR = (255, 0, 255)  # RGB
 TILE_MAP = "level1.tmx"
 FPS = 60
+
+
+def handle_input(event):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT:
+            print("Left key")
+            return
+        elif event.key == pygame.K_RIGHT:
+            print("Right Key")
+            return
+        elif event.key == pygame.K_DOWN:
+            return
+        elif event.key == pygame.K_UP:
+            return
+        elif event.key == pygame.K_w:
+            return
+        elif event.key == pygame.K_s:
+            return
+        elif event.key == pygame.K_a:
+            return
+        elif event.key == pygame.K_d:
+            return
+        elif event.key == pygame.K_z:
+            return
+        elif event.key == pygame.K_x:
+            return
+        elif event.key == pygame.K_SPACE:
+            return
 
 
 def draw_window(window):
@@ -47,6 +75,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
+            handle_input(event)
         render_tile_map(tile_map_data, window)
         pygame.display.update()
     pygame.quit()
