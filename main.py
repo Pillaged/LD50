@@ -16,22 +16,6 @@ def draw_window(window):
     pygame.display.update()
 
 
-# def load_tile_map(tile_map):
-#     global image, WIDTH, HEIGHT
-#     asset_path = os.path.join(os.getcwd(), "Assets", tile_map)
-#     print(asset_path)
-#
-#     tmxdata = pytmx.load_pygame(asset_path, pixelalpha=True)
-#     WIDTH, HEIGHT = tmxdata.width * tmxdata.tilewidth, tmxdata.height * tmxdata.tileheight
-#     ti = tmxdata.get_tile_image_by_gid
-#     for layer in tmxdata.visible_layers:
-#         if isinstance(layer, pytmx.TiledTileLayer):
-#             for x, y, gid, in layer:
-#                 tile = ti(gid)
-#                 if tile:
-#                     image = tmxdata.get_tile_image(x, y, layer)
-
-
 def load_freeky_head():
     img = asset_manager.load_image("assets/head.png")
     screen = pygame.display.get_surface()
