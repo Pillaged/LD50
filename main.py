@@ -3,7 +3,6 @@ import pygame
 from asset_manager import load_image
 import os
 import pytmx
-
 import asset_manager
 
 WIDTH, HEIGHT = 1920, 1600
@@ -44,6 +43,7 @@ def main():
     # tile_map_data = asset_manager.load_tile_map(os.path.join(os.getcwd(), "Assets", TILE_MAP))
     window = pygame.display.set_mode((WIDTH, HEIGHT))
     tile_map_data = pytmx.load_pygame(os.path.join(os.getcwd(), "Assets", TILE_MAP))
+
     pygame.display.set_caption("First Game!")
     clock = pygame.time.Clock()
     pygame.init()
