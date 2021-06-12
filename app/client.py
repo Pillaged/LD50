@@ -1,9 +1,10 @@
 import logging
 import time
 
+import pygame
 import pygame as pg
 
-from state import StateManager
+from app.state import StateManager
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ class Client(StateManager):
         :type caption: str
         :rtype: None
         """
+        super(Client, self).__init__()
         # Set up our game's configuration from the prepare module.
         #self.config = prepare.CONFIG
 
@@ -64,7 +66,7 @@ class Client(StateManager):
         fps_timer = 0
         frames = 0
 
-        while not self.exit:
+        while not self.done:
             clock_tick = clock() - last_update
             last_update = clock()
             time_since_draw += clock_tick
@@ -75,25 +77,19 @@ class Client(StateManager):
                 flip()
                 frames += 1
 
+            #Need to pump event queue for some reason
+            for event in pygame.event.get():
+                pass
+
             fps_timer, frames = self.handle_fps(clock_tick, fps_timer, frames)
-            time.sleep(.001)
+            time.sleep(.01)
 
     def update(self, time_delta):
-        """Main loop for entire game. This method gets update every frame
-        by Asteria Networking's "listen()" function. Every frame we get the
-        amount of time that has passed each frame, check game conditions,
-        and draw the game to the screen.
-
-        :type time_delta: float
-        :rtype: None
-        :returns: None
-
+        """Main loop for entire game.
         """
         # Update the game engine
         self.update_states(time_delta)
 
-        if self.exit:
-            self.done = True
 
     def update_states(self, dt):
         """ Checks if a state is done or has called for a game quit.
@@ -110,7 +106,7 @@ class Client(StateManager):
 
         # handle case where the top state has been dismissed
         if current_state is None:
-            self.exit = True
+            self.done = True
 
         if current_state in self._state_resume_set:
             current_state.resume()
