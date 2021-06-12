@@ -1,6 +1,8 @@
 import pygame
 import logging
 
+from pytmx import pytmx
+
 import prepare
 from pygame import mixer
 
@@ -38,3 +40,11 @@ def load_audio(filename):
         logger.error(e)
         logger.error('Unable to load sound: {}'.format(filename))
         return DummySound()
+
+
+def load_tile_map(filename):
+    """ Load tilemap from the resources folder
+    """
+    filename = transform_resource_filename(filename)
+    data = pytmx.TiledMap(filename, pixelalpha=True)
+    return data
