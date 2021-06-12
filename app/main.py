@@ -1,5 +1,6 @@
 import pygame
 
+from app import prepare
 from app.client import Client
 
 width, height = 600, 500
@@ -10,7 +11,7 @@ background_color = (255, 0, 255)  # RGB
 
 
 def main():
-    pygame.init()
+    prepare.init()
     client = Client("Five Ants")
     client.auto_state_discovery()
     client.push_state("BackgroundState")

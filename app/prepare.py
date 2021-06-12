@@ -1,8 +1,10 @@
 import os
 import sys
 
-NATIVE_RESOLUTION = [320, 288]
-SCREEN_SIZE = [320 * 4, 288 * 4]
+import pygame
+
+NATIVE_RESOLUTION = [960, 480]
+SCREEN_SIZE = [960, 480]
 
 LIBDIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -17,6 +19,13 @@ USER_GAME_SAVE_DIR = os.path.join(USER_GAME_DIR, "saves")
 
 if not os.path.isdir(USER_GAME_DIR):
     os.makedirs(USER_GAME_DIR)
+
+
+def init():
+    pygame.init()
+    pygame.display.set_caption("Five Ants")
+    flags = pygame.HWSURFACE | pygame.DOUBLEBUF
+    pygame.display.set_mode(SCREEN_SIZE, flags)
 
 
 def fetch(*args):
