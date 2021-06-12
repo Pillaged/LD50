@@ -168,6 +168,7 @@ class PygameKeyboardInput(PygameEventHandler):
         pg.K_s: Button.ALL_BODY,
         pg.K_r: Button.RESET,
         pg.K_ESCAPE: Button.ESCAPE,
+        pg.K_SPACE: Button.INTERACT,
         None: Button.UNICODE,
     }
 

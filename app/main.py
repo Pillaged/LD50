@@ -9,5 +9,6 @@ def main():
     client = Client("Five Ants")
     client.auto_state_discovery()
     client.push_state("BackgroundState")
+    client.push_state("MenuState")
     client.main()
     pygame.quit()
