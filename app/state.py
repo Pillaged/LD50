@@ -49,6 +49,9 @@ class State:
     def pause(self):
         pass
 
+    def process_event(self, event):
+        pass
+
     def cleanup(self):
         pass
 

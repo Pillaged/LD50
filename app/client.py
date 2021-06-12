@@ -4,6 +4,7 @@ import time
 import pygame
 import pygame as pg
 
+from app.input_manager import PygameEventQueueHandler
 from app.state import StateManager
 
 logger = logging.getLogger(__name__)
@@ -42,8 +43,7 @@ class Client(StateManager):
         #if self.config.cli:
         #    self.cli = cli.CommandLine(self)
 
-        # Set up rumble support for gamepads
-
+        self.input_manager = PygameEventQueueHandler()
 
     def main(self):
         """ Initiates the main game loop. Since we are using Asteria networking
@@ -77,18 +77,39 @@ class Client(StateManager):
                 flip()
                 frames += 1
 
-            #Need to pump event queue for some reason
-            for event in pygame.event.get():
-                pass
-
             fps_timer, frames = self.handle_fps(clock_tick, fps_timer, frames)
             time.sleep(.01)
 
     def update(self, time_delta):
         """Main loop for entire game.
         """
+        # get all the input waiting for use
+        events = self.input_manager.process_events()
+        # processes events, collects unused events
+        events = list(self.process_events(events))
+
         # Update the game engine
         self.update_states(time_delta)
+
+    def process_events(self, events):
+        """ Process all events for this frame.
+        """
+        for game_event in events:
+            if game_event:
+                game_event = self._send_event(game_event)
+                if game_event:
+                    yield game_event
+
+    def _send_event(self, game_event):
+        """ Send event down processing chain
+        """
+        for state in self.active_states:
+            game_event = state.process_event(game_event)
+            if game_event is None:
+                break
+        else:
+            pass
+        return game_event
 
 
     def update_states(self, dt):
