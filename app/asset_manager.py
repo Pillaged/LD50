@@ -3,10 +3,20 @@ import logging
 
 from pytmx import pytmx
 
-import prepare
+import app.prepare as prepare
 from pygame import mixer
 
 logger = logging.getLogger(__name__)
+
+
+def scale_surface(surface, factor):
+    return pygame.transform.scale(
+        surface, [int(i * factor) for i in surface.get_size()]
+    )
+
+
+def load_and_scale(filename):
+    return scale_surface(load_image(filename), prepare.SCALE)
 
 
 def transform_resource_filename(*filename):
