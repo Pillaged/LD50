@@ -109,19 +109,19 @@
 </data>
  </layer>
  <objectgroup id="7" name="AntBody">
-  <object id="30" name="righthand" type="entity" x="480.667" y="864" width="30" height="30.6667"/>
+  <object id="30" name="rightleg" type="entity" x="483.667" y="867" width="27.6667" height="29.3334"/>
   <object id="31" name="righthand" type="entity" x="480" y="800" width="32.6667" height="32"/>
-  <object id="32" name="head" type="entity" x="447.333" y="800.667" width="32" height="32"/>
+  <object id="32" name="head" type="entity" x="449" y="802.334" width="29.6667" height="28"/>
   <object id="33" name="lefthand" type="entity" x="416.667" y="801.333" width="30" height="31.3333"/>
   <object id="34" name="leftleg" type="entity" x="418" y="864" width="28.6667" height="32"/>
   <object id="84" name="Hleftleg" type="entity" x="1380.67" y="866.667" width="25.3333" height="25.3333"/>
   <object id="85" name="Hlefthand" type="entity" x="1380" y="805" width="24.5" height="22"/>
   <object id="87" name="Hhead" type="entity" x="1413.5" y="773.5" width="22.5" height="52.5"/>
   <object id="88" name="Hrighthand" type="entity" x="1446" y="806" width="23" height="19"/>
-  <object id="90" name="Hrightleg" type="entity" x="1455" y="880"/>
+  <object id="90" name="Hrightleg" type="entity" x="1441" y="866.5" width="29" height="24.5"/>
  </objectgroup>
  <objectgroup id="10" name="Humanbody"/>
- <objectgroup id="9" name="Collision">
+ <objectgroup id="9" name="Collision" visible="0">
   <object id="38" type="collision" x="451.333" y="4" width="505.333" height="24.6667"/>
   <object id="39" type="collision" x="934" y="19.3333" width="21.3333" height="512.667"/>
   <object id="40" type="collision" x="934" y="524.667" width="22" height="430"/>

@@ -14,15 +14,17 @@ def crop(path, input, filename, height, width, skip=0, k=0, max_k=1000, area=Non
                 continue
             box = (j, i, j + width, i + height)
             a = im.crop(box)
+            print(box)
             try:
                 if area:
-                    tmp = Image.new(a.mode, (area[2],area[3]))
-                    tmp.paste(a, (area[2]-width, area[3]-height))
+                    tmp = Image.new(a.mode, (area[2], area[3]))
+                    tmp.paste(a, (area[2] - width, area[3] - height))
                 else:
                     tmp = a
 
                 if max_k:
-                    tmp.save(os.path.join(path, filename + ".00" + str(k) + ".png", ))
+                    zeros = "."+"000"[0:3-len(str(k))]
+                    tmp.save(os.path.join(path, filename + zeros + str(k) + ".png", ))
                 else:
                     tmp.save(os.path.join(path, filename + ".png", ))
             except:
@@ -34,17 +36,17 @@ def crop(path, input, filename, height, width, skip=0, k=0, max_k=1000, area=Non
 
 
 if __name__ == "__main__":
-    path = Path("../sprites/man/")
-    input = Path("../assets/split.png")
+    path = Path("../sprites/splash/")
+    input = Path("../sprites/splash/splash_all.png")
     print(input.absolute())
-    w = 32
-    h = 32
+    w = 980
+    h = 480
 
     # crop(path, input, "plum_back_walk", h, w, skip=12, max_k=4)
 
-    files = ["_big"]
-    area = [0, 0, 32, 32]
+    files = [""]
+    area = [0, 0, w, h]
     for i, x in enumerate(files):
-        x = "man" + x
-        crop(path, input, x, h, w, skip=i * 4, max_k=6, area=area)
-        crop(path, input, "_".join(x.split("_")[:-1]), h, w, skip=i * 4, max_k=0, area=area)
+        x = "splash" + x
+        crop(path, input, x, h, w, skip=i * 4, max_k=14, area=area)
+        crop(path, input, "".join(x.split("_")[:-1]), h, w, skip=i * 4, max_k=0, area=area)

@@ -1,0 +1,17 @@
+{
+  "slug": "clip",
+  "sprites": {
+    "1": {
+      "file": "intro/behold",
+      "animation": true,
+      "frames": 131,
+      "frame_duration": 0.1
+    },
+    "2": {
+      "file": "intro/science",
+      "animation": true,
+      "frames": 152,
+      "frame_duration": 0.1
+    }
+  }
+}

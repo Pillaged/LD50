@@ -4,7 +4,7 @@ import logging
 import pygame
 
 from app import prepare
-from app.entity import DrawInterface, EventInterface, UpdateInterface
+from app.entity import DrawInterface, EventInterface, UpdateInterface, WallInterface
 from app.entity.controllable_ant import ControllableAnt, MainControllableAnt
 from app.entity.man import ManHead
 from app.game import pairs
@@ -58,6 +58,10 @@ class WorldState(State):
             if isinstance(e, EventInterface):
                 e.event(event)
 
+        if event.button == Button.RESET and event.pressed:
+            self.player = [self.player[1], self.player[0]]
+            self.change_map(self.map_name)
+
     def startup(self, *args, **kwargs):
         super().startup(*args, **kwargs)
 
@@ -68,7 +72,7 @@ class WorldState(State):
 
     def change_map(self, map_name):
         map_data = TMXMapLoader().load(map_name)
-
+        self.map_name = map_name
         self.current_map = map_data
         self.current_map.initialize_renderer()
         self.collision_map = map_data.collision_map
@@ -141,7 +145,7 @@ class WorldState(State):
         self.rect = self.current_map.renderer.draw(surface, surface.get_rect(), screen_surfaces)
 
         # If we want to draw the collision map for debug purposes
-        if True:  # prepare.CONFIG.collision_map:
+        if False:  # prepare.CONFIG.collision_map:
             self.debug_drawing(surface)
 
     def debug_drawing(self, surface):
@@ -187,8 +191,8 @@ class WorldState(State):
             return False
         if tile in self.entity_map:
             for e in self.entity_map[tile]:
-                # if isinstance(e, WallInterface) and not e.valid_move(entity):
-                return False
+                if isinstance(e, WallInterface) and not e.valid_move(entity):
+                    return False
         return True
 
     def get_exits(self, position, collision_map=None, skip_nodes=None):
@@ -256,3 +260,7 @@ class WorldState(State):
         collision_dict = dict()
         collision_dict.update(self.collision_map)
         return collision_dict
+
+    def next_level(self, clip, cliptime, level):
+        instance = self.client.replace_state("IntroState")
+        instance.set_clip(clip, cliptime, level)

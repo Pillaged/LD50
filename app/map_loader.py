@@ -9,7 +9,8 @@ from pytmx.util_pygame import handle_transformation, smart_convert
 
 from app import prepare, asset_manager
 from app.entity.controllable_ant import ControllableAnt, MainControllableAnt
-from app.entity.man import ManHand, ManHead
+from app.entity.man import ManPart, ManHead
+from app.entity.win import Win
 from app.game import GameMap
 from app.input_manager import Button
 
@@ -54,12 +55,29 @@ class TMXMapLoader:
         collision_map = dict()
         entities = list()
 
-        self.left_hand = ManHand(position=(0, 0), sprite_name="lefthand")
-        self.right_hand = ManHand(position=(0, 0), sprite_name="righthand")
-        self.left_leg = ManHand(position=(0, 0), sprite_name="leftleg")
-        self.right_leg = ManHand(position=(0, 0), sprite_name="rightleg")
-        self.head = ManHead(position=(0, 0), sprite_name="head")
+        self.left_hand = ManPart(position=(0, 0), sprite_name="lefthand")
+        self.right_hand = ManPart(position=(0, 0), sprite_name="righthand")
+        self.left_leg = ManPart(position=(0, 0), sprite_name="leftleg")
+        self.right_leg = ManPart(position=(0, 0), sprite_name="rightleg")
+        self.head = ManHead(position=(0, 0), sprite_name="head",
+                            pieces=[self.left_hand, self.right_hand, self.right_leg, self.left_leg])
+        self.left_hand.head = self.head
+        self.right_hand.head = self.head
+        self.left_leg.head = self.head
+        self.right_leg.head = self.head
 
+        self.left_hand_ant = ControllableAnt(position=(0, 0), control=(Button.LEFT_HAND, Button.ALL_BODY),
+                                             part=self.left_hand)
+        self.right_hand_ant = ControllableAnt(position=(0, 0), control=(Button.RIGHT_HAND, Button.ALL_BODY),
+                                              part=self.right_hand)
+        self.left_leg_ant = ControllableAnt(position=(0, 0), control=(Button.LEFT_FOOT, Button.ALL_BODY),
+                                            part=self.left_leg)
+        self.right_leg_ant = ControllableAnt(position=(0, 0), control=(Button.RIGHT_FOOT, Button.ALL_BODY),
+                                             part=self.right_leg)
+        self.head_ant = MainControllableAnt(position=(0, 0), control=(Button.HEAD, Button.ALL_BODY),
+                                            part=self.head,
+                                            pieces=[self.left_hand_ant, self.right_hand_ant, self.left_leg_ant,
+                                                    self.right_leg_ant])
         for obj in data.objects:
             if obj.type and obj.type.lower().startswith("collision"):
                 for tile_position, conds in self.region_tiles(obj, tile_size):
@@ -84,7 +102,8 @@ class TMXMapLoader:
                             else:
                                 e.set_position(tile_position)
                                 entities.append(e)
-        entities.extend((self.left_leg, self.right_hand, self.left_hand, self.right_leg, self.head))
+        entities.extend((self.left_leg, self.right_hand, self.left_hand, self.right_leg, self.head, self.left_leg_ant,
+                         self.right_hand_ant, self.left_hand_ant, self.right_leg_ant, self.head_ant))
         return GameMap(
             collision_map, entities, edges, data, filename,
         )
@@ -124,25 +143,21 @@ class TMXMapLoader:
 
         def get_entity(name):
             if name == "leftleg":
-                return ControllableAnt(position=(x, y), control=(Button.LEFT_FOOT, Button.ALL_BODY), part=self.left_leg,
-                                       **dt)
+                self.left_leg_ant.set_position((x, y))
             if name == "rightleg":
-                return ControllableAnt(position=(x, y), control=(Button.RIGHT_FOOT, Button.ALL_BODY),
-                                       part=self.right_leg, **dt)
+                self.right_leg_ant.set_position((x, y))
+
             if name == "lefthand":
-                return ControllableAnt(position=(x, y), control=(Button.LEFT_HAND, Button.ALL_BODY),
-                                       part=self.left_hand,
-                                       **dt)
+                self.left_hand_ant.set_position((x, y))
+
             if name == "righthand":
-                return ControllableAnt(position=(x, y), control=(Button.RIGHT_HAND, Button.ALL_BODY),
-                                       part=self.right_hand, **dt)
+                self.right_hand_ant.set_position((x, y))
+
             if name == "head":
-                return MainControllableAnt(position=(x, y), control=(Button.HEAD, Button.ALL_BODY), part=self.head,
-                                           **dt)
+                self.head_ant.set_position((x, y))
 
             if name == "hleftleg":
-                self.left_leg.set_position((x,y))
-                print(x,y)
+                self.left_leg.set_position((x, y))
             if name == "hrightleg":
                 self.right_leg.set_position((x, y))
 
@@ -154,6 +169,9 @@ class TMXMapLoader:
 
             if name == "hhead":
                 self.head.set_position((x, y))
+
+            if name == "win":
+                return Win(position=(x, y), **dt)
 
         entities = []
         for name in obj.name.split(","):

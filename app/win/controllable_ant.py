@@ -8,9 +8,6 @@ from app.libraries.euclid import mail_distance, square_distance
 
 class ControllableAnt(Entity, DrawInterface, UpdateInterface, EventInterface, Movable, WallInterface):
 
-    def valid_move(self, entity):
-        return False
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.sprite_name = "ant_small"
@@ -28,7 +25,6 @@ class ControllableAnt(Entity, DrawInterface, UpdateInterface, EventInterface, Mo
 
     def get_sprite_name(self):
         return self.sprite_name
-
 
     def update(self, dt):
         if self.can_move and self.wants_to_move and not self.path and self.wants_to_move_direction:
@@ -62,6 +58,6 @@ class MainControllableAnt(ControllableAnt):
         super(MainControllableAnt, self).update(dt)
 
         for piece in self.pieces:
-            piece.too_far = square_distance(piece.get_tile_pos(), self.get_tile_pos()) > 2.1
+            piece.too_far = square_distance(piece.get_tile_pos(), self.get_tile_pos()) > 2
 
 

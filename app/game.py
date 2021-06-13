@@ -69,5 +69,5 @@ class GameMap:
 
     def initialize_renderer(self):
         visual_data = pyscroll.TiledMapData(self.data)
-        clamp = (self.edges == "clamped")
+        clamp = (self.edges == "clamped") or True
         self.renderer = pyscroll.BufferedRenderer(visual_data, prepare.SCREEN_SIZE, clamp_camera=clamp, tall_sprites=2)

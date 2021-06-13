@@ -33,6 +33,7 @@ __revision__ = '$Revision: 37 $'
 
 long = int
 
+
 def nearest(X):
     return tuple(int(round(x)) for x in X)
 
@@ -43,6 +44,17 @@ def trunc(lst):
 
 def proj(point):
     return Point2(point[0], point[1])
+
+
+def mail_distance(tile0, tile1):
+    x0, y0 = tile0
+    x1, y1 = tile1
+    return abs(x1 - x0) + abs(y1 - y0)
+
+def square_distance(tile0, tile1):
+    x0, y0 = tile0
+    x1, y1 = tile1
+    return max(abs(x1 - x0), abs(y1 - y0))
 
 
 def tile_distance(tile0, tile1):

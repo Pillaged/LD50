@@ -94,8 +94,8 @@ class Entity:
             self.set_position(target)
             self.path.pop()
 
-            # self.world.end_move_out(self, self.path_origin)
-            # self.world.end_move_into(self, target)
+            #self.world.end_move_out(self, self.path_origin)
+            #self.world.end_move_into(self, target)
 
             self.path_origin = None
             if self.path:
@@ -144,8 +144,6 @@ class EventInterface:
 
 
 class DrawInterface:
-    offset_y = 0
-
     def get_sprites(self, layer):
         state = self.get_sprite_state()
         frame = self.sprite[state]
@@ -153,8 +151,7 @@ class DrawInterface:
             surface = frame.getCurrentFrame()
             frame.rate = self.get_play_rate(state)
             return [(surface, self.get_tile_pos(), layer)]
-        pos = (self.get_tile_pos()[0], + self.get_tile_pos()[1] + self.offset_y)
-        return [(frame, pos, layer)]
+        return [(frame, self.get_tile_pos(), layer)]
 
     def load_sprites(self, sprite_name=None):
         """ Load sprite graphics
@@ -194,7 +191,6 @@ class DrawInterface:
 
     def get_sprite_name(self):
         raise NotImplementedError
-
 
 class WallInterface:
     def valid_move(self, entity):

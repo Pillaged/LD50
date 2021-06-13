@@ -1,0 +1,11 @@
+{
+  "slug": "splash",
+  "sprites": {
+    "idle": {
+      "file": "splash/splash",
+      "animation": true,
+      "frames": 14,
+      "frame_duration": 0.1
+    }
+  }
+}
