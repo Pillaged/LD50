@@ -8,7 +8,7 @@ from pytmx import pytmx
 from pytmx.util_pygame import handle_transformation, smart_convert
 
 from app import prepare, asset_manager
-from app.entity.controllable_ant import ControllableAnt
+from app.entity.controllable_ant import ControllableAnt, MainControllableAnt
 from app.game import GameMap
 from app.input_manager import Button
 
@@ -127,7 +127,7 @@ class TMXMapLoader:
             if name == "righthand":
                 return ControllableAnt(position=(x, y), control=(Button.RIGHT_HAND, Button.ALL_BODY), **dt)
             if name == "head":
-                return ControllableAnt(position=(x, y), control=(Button.HEAD, Button.ALL_BODY), **dt)
+                return MainControllableAnt(position=(x, y), control=(Button.HEAD, Button.ALL_BODY), **dt)
 
         entities = []
         for name in obj.name.split(","):

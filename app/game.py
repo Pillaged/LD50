@@ -3,6 +3,7 @@ import logging
 import pyscroll as pyscroll
 
 from app import prepare
+from app.input_manager import Button
 from app.libraries.euclid import Vector2, Vector3
 
 logger = logging.getLogger(__name__)
@@ -20,6 +21,14 @@ dirs2 = {
     "left": Vector2(-1, 0),
     "right": Vector2(1, 0),
 }
+
+butts2 = {
+    Button.UP: Vector2(0, -1),
+    Button.DOWN: Vector2(0, 1),
+    Button.LEFT: Vector2(-1, 0),
+    Button.RIGHT: Vector2(1, 0),
+}
+
 # 1 letter direction names
 short_dirs2 = {d[0]: dirs2[d] for d in dirs2}
 

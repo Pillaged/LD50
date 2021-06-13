@@ -5,7 +5,7 @@ import app.libraries.pyganim as pyganim
 from app.asset_manager import load_and_scale
 from app.db import db
 from app.libraries.euclid import Point3, Vector3, proj, tile_distance, trunc
-from app.game import dirs2, dirs3, get_direction
+from app.game import dirs2, dirs3, get_direction, butts2
 
 
 class Entity:
@@ -40,7 +40,6 @@ class Entity:
     # Physics
     def update_physics(self, td):
         self.position3 += self.velocity3 * td
-        self.pos_update()
 
     def set_position(self, pos):
         self.position3.x = pos[0]
@@ -72,7 +71,7 @@ class Entity:
 
     def move_one_tile(self, direction):
         pos = self.path[0] if self.path else self.world_pos
-        self.path.insert(0, trunc(pos + dirs2[direction]))
+        self.path.insert(0, trunc(pos + butts2[direction]))
 
     def next_waypoint(self):
         target = self.path[-1]
@@ -81,8 +80,8 @@ class Entity:
         if self.world.valid_move(self, target):
             self.path_origin = tuple(self.tile_pos)
             self.velocity3 = self.move_rate * dirs3[direction]
-            self.world.start_move_out(self, self.path_origin)
-            self.world.start_move_into(self, target)
+            #self.world.start_move_out(self, self.path_origin)
+            #self.world.start_move_into(self, target)
         else:
             # the target is blocked now
             self.stop_moving()
@@ -98,8 +97,8 @@ class Entity:
             self.set_position(target)
             self.path.pop()
 
-            self.world.end_move_out(self, self.path_origin)
-            self.world.end_move_into(self, target)
+            #self.world.end_move_out(self, self.path_origin)
+            #self.world.end_move_into(self, target)
 
             self.path_origin = None
             if self.path:
@@ -129,6 +128,22 @@ class Entity:
     def cancel_path(self):
         self.path = []
         self.path_origin = None
+
+
+class Movable:
+    wants_to_move = None
+    wants_to_move_direction = None
+    can_move = False
+
+
+class UpdateInterface:
+    def update(self, dt):
+        pass
+
+
+class EventInterface:
+    def event(self, event):
+        pass
 
 
 class DrawInterface:
