@@ -1,4 +1,5 @@
 import pygame
+from app.libraries.pyganim import PygAnimation as pyganim
 
 
 class Sprite(pygame.sprite.DirtySprite):
@@ -60,7 +61,7 @@ class Sprite(pygame.sprite.DirtySprite):
         if self._needs_rescale:
             w = self.rect.width if self._width is None else self._width
             h = self.rect.height if self._height is None else self._height
-            image = scale(self._original_image, (w, h))
+            image = pyganim.scale(self._original_image, (w, h))
             center = self.rect.center
             self.rect.size = w, h
             self.rect.center = center
@@ -68,7 +69,7 @@ class Sprite(pygame.sprite.DirtySprite):
             image = self._original_image
 
         if self._rotation:
-            image = rotozoom(image, self._rotation, 1)
+            image = pyganim.rotozoom(image, self._rotation, 1)
             rect = image.get_rect(center=self.rect.center)
             self.rect.size = rect.size
             self.rect.center = rect.center
