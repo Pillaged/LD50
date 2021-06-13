@@ -1,8 +1,12 @@
+import itertools
 import logging
+
+import pygame
 
 from app import prepare
 from app.entity import DrawInterface, EventInterface, UpdateInterface
 from app.entity.controllable_ant import ControllableAnt, MainControllableAnt
+from app.entity.man import ManHead
 from app.game import pairs
 from app.libraries.euclid import nearest, trunc
 from app.input_manager import Button
@@ -19,9 +23,20 @@ class WorldState(State):
 
     def update(self, time_delta):
         super().update(time_delta)
+        self.update_entity_map()
         for e in self.entities:
             if isinstance(e, UpdateInterface):
                 e.update(time_delta)
+
+    def update_entity_map(self):
+        entity_map = dict()
+        for e in self.entities:
+            pos = nearest(e.world_pos)
+            if pos in entity_map:
+                entity_map[pos].append(e)
+            else:
+                entity_map[pos] = [e]
+        self.entity_map = entity_map
 
     def draw(self, surface):
         self.screen = surface
@@ -35,6 +50,9 @@ class WorldState(State):
         if event.button == Button.ESCAPE and event.pressed:
             self.client.done = True
             return None
+
+        if event.button == Button.INTERACT and event.pressed:
+            self.player = [self.player[1], self.player[0]]
 
         for e in self.entities:
             if isinstance(e, EventInterface):
@@ -67,10 +85,14 @@ class WorldState(State):
         self.set_player()
 
     def set_player(self):
+        self.player = []
         for e in self.entities:
             if type(e) == MainControllableAnt:
-                self.player = e
-                return
+                self.player.append(e)
+
+        for e in self.entities:
+            if type(e) == ManHead:
+                self.player.append(e)
 
     def add_entity(self, entity):
         entity.world = self
@@ -83,7 +105,7 @@ class WorldState(State):
         world_surfaces = list()
 
         # get player coords to center map
-        cx, cy = nearest(self.project(self.player.tile_pos))
+        cx, cy = nearest(self.project(self.player[0].tile_pos))
         # cx, cy = 0, 0
 
         # offset center point for player sprite
@@ -119,8 +141,38 @@ class WorldState(State):
         self.rect = self.current_map.renderer.draw(surface, surface.get_rect(), screen_surfaces)
 
         # If we want to draw the collision map for debug purposes
-        # if prepare.CONFIG.collision_map:
-        #    self.debug_drawing(surface)
+        if True:  # prepare.CONFIG.collision_map:
+            self.debug_drawing(surface)
+
+    def debug_drawing(self, surface):
+        from pygame.gfxdraw import box
+
+        surface.lock()
+        # We need to iterate over all collidable objects.  So, let's start
+        # with the walls/collision boxes.
+        box_iter = list(map(self._collision_box_to_pgrect, self.collision_map))
+        # draw noc and wall collision tiles
+        red = (255, 0, 0, 128)
+        for item in box_iter:
+            box(surface, item, red)
+
+        # draw center lines to verify camera is correct
+        w, h = surface.get_size()
+        cx, cy = w // 2, h // 2
+        pygame.draw.line(surface, (255, 50, 50), (cx, 0), (cx, h))
+        pygame.draw.line(surface, (255, 50, 50), (0, cy), (w, cy))
+
+        surface.unlock()
+
+    def _collision_box_to_pgrect(self, box):
+        """Returns a Rect (in screen-coords) version of a collision box (in world-coords).
+        """
+
+        # For readability
+        x, y = self.get_pos_from_tilepos(box)
+        tw, th = self.tile_size
+
+        return pygame.Rect(x, y, tw, th)
 
     def get_pos_from_tilepos(self, tile_position):
         cx, cy = self.current_map.renderer.get_center_offset()
@@ -133,10 +185,10 @@ class WorldState(State):
         tile = (tile[0], tile[1])
         if tile not in self.get_exits(trunc(entity.tile_pos)):
             return False
-        # if tile in self.entity_map:
-        #    for e in self.entity_map[tile]:
-        #       # if isinstance(e, WallInterface) and not e.valid_move(entity):
-        #            return False
+        if tile in self.entity_map:
+            for e in self.entity_map[tile]:
+                # if isinstance(e, WallInterface) and not e.valid_move(entity):
+                return False
         return True
 
     def get_exits(self, position, collision_map=None, skip_nodes=None):

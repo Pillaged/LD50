@@ -85,6 +85,7 @@ class Entity:
         else:
             # the target is blocked now
             self.stop_moving()
+            self.path = []
 
     def check_waypoint(self):
         """ Check if the waypoint is reached and sets new waypoint if so.
@@ -193,4 +194,22 @@ class DrawInterface:
         raise NotImplementedError
 
     def get_sprite_name(self):
+        raise NotImplementedError
+
+class WallInterface:
+    def valid_move(self, entity):
+        raise NotImplementedError
+
+
+class TileCollisionInterface:
+    def start_move_into(self, entity):
+        raise NotImplementedError
+
+    def end_move_into(self, entity):
+        raise NotImplementedError
+
+    def start_move_out(self, entity):
+        raise NotImplementedError
+
+    def end_move_out(self, entity):
         raise NotImplementedError
