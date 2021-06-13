@@ -1,14 +1,14 @@
 import os
 
-from app import config, pyganim as pyganim
+from app import config
+import app.libraries.pyganim as pyganim
 from app.asset_manager import load_and_scale
 from app.db import db
-from app.euclid import Point3, Vector3, proj, tile_distance, trunc
+from app.libraries.euclid import Point3, Vector3, proj, tile_distance, trunc
 from app.game import dirs2, dirs3, get_direction
 
 
 class Entity:
-
     def __init__(self, **kwargs):
         self.type = None
         self.world = None
@@ -54,8 +54,6 @@ class Entity:
     @property
     def moving(self):
         return not self.velocity3 == (0, 0, 0)
-
-    # Movement
 
     def move(self, dt):
         self.update_physics(dt)
@@ -132,8 +130,8 @@ class Entity:
         self.path = []
         self.path_origin = None
 
-class DrawInterface:
 
+class DrawInterface:
     def get_sprites(self, layer):
         state = self.get_sprite_state()
         frame = self.sprite[state]

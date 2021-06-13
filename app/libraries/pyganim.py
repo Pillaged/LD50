@@ -1,4 +1,4 @@
-
+# TODO: Mason custom modified this library for whatever reason so now this cursed import is in here. Why are you like this my friend
 # core.pyganim A sprite animation module for Pygame.
 #
 # Pyganim (pyganim.py, ver 1)
