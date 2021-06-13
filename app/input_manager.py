@@ -33,7 +33,6 @@ class PygameEventQueueHandler:
         self._inputs[0].append(PygameMouseInput())
         self._inputs[0].append(QuitInput())
 
-
     def process_events(self):
         """ Process all pygame events
         * Should never return pygame-unique events
@@ -45,7 +44,6 @@ class PygameEventQueueHandler:
             for player, inputs in self._inputs.items():
                 for player_input in inputs:
                     player_input.process_event(pg_event)
-
 
         for player, inputs in self._inputs.items():
             for player_input in inputs:
@@ -170,6 +168,7 @@ class PygameKeyboardInput(PygameEventHandler):
         pg.K_s: Button.ALL_BODY,
         pg.K_r: Button.RESET,
         pg.K_ESCAPE: Button.ESCAPE,
+        pg.K_SPACE: Button.INTERACT,
         None: Button.UNICODE,
     }
 
@@ -222,4 +221,3 @@ class QuitInput(PygameEventHandler):
     def process_event(self, pg_event):
         if pg_event.type == pg.QUIT:
             self.press(Button.QUIT)
-
