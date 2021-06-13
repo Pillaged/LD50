@@ -11,6 +11,6 @@ def main():
     client.push_state("BackgroundState")
     instance = client.push_state("WorldState")
     instance.change_map("assets/antlevel1.tmx")
-    #client.push_state("MenuState")
+    # client.push_state("MenuState")
     client.main()
     pygame.quit()

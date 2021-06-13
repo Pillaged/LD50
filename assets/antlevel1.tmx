@@ -75,6 +75,5 @@
   <object id="24" name="leftleg" type="entity" x="462.667" y="878.667"/>
   <object id="25" name="lefthand" type="entity" x="462.667" y="817.333"/>
   <object id="26" name="head" type="entity" x="496" y="818.667"/>
-  <object id="28" name="torso" type="entity" x="496.333" y="848"/>
  </objectgroup>
 </map>

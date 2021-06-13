@@ -39,7 +39,7 @@ class Entity:
     # Physics
     def update_physics(self, td):
         self.position3 += self.velocity3 * td
-        # self.pos_update()
+        self.pos_update()
 
     def set_position(self, pos):
         self.position3.x = pos[0]
