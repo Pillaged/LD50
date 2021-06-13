@@ -8,7 +8,6 @@ from app.game import dirs2, dirs3, get_direction
 
 
 class Entity:
-
     def __init__(self, **kwargs):
         self.type = None
         self.world = None
@@ -40,7 +39,7 @@ class Entity:
     # Physics
     def update_physics(self, td):
         self.position3 += self.velocity3 * td
-        self.pos_update()
+        # self.pos_update()
 
     def set_position(self, pos):
         self.position3.x = pos[0]
@@ -132,8 +131,8 @@ class Entity:
         self.path = []
         self.path_origin = None
 
-class DrawInterface:
 
+class DrawInterface:
     def get_sprites(self, layer):
         state = self.get_sprite_state()
         frame = self.sprite[state]
