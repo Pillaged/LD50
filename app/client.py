@@ -22,7 +22,6 @@ class Client(StateManager):
         :rtype: None
         """
         super(Client, self).__init__()
-        # INFO: no need to call superclass for now
         self.screen = pg.display.get_surface()
         self.caption = caption
 

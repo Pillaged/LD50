@@ -2,7 +2,7 @@ import logging
 
 from app import prepare
 from app.entity import DrawInterface
-from app.euclid import nearest
+from app.libraries.euclid import nearest
 from app.input_manager import Button
 from app.map_loader import TMXMapLoader
 from app.state import State
@@ -64,8 +64,6 @@ class WorldState(State):
 
     def map_drawing(self, surface):
         world_surfaces = list()
-
-        # temporary
 
         # get player coords to center map
         # cx, cy = nearest(self.project(self.player.tile_pos))

@@ -3,7 +3,7 @@ import logging
 import pyscroll as pyscroll
 
 from app import prepare
-from app.euclid import Vector2, Vector3
+from app.libraries.euclid import Vector2, Vector3
 
 logger = logging.getLogger(__name__)
 
