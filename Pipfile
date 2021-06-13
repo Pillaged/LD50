@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 pygame = "*"
 pytmx = "*"
-pyganim = "*"
 pillow = "*"
 pyscroll = "*"
 

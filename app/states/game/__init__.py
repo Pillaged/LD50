@@ -55,15 +55,21 @@ class WorldState(State):
         for e in map_data.entities:
             self.add_entity(e)
 
+    def add_entity(self, entity):
+        entity.world = self
+        self.entities.append(entity)
+
+    def project(self, position):
+        return position[0] * self.tile_size[0], position[1] * self.tile_size[1]
+
     def map_drawing(self, surface):
         world_surfaces = list()
 
         # temporary
 
-
         # get player coords to center map
-        #cx, cy = nearest(self.project(self.player.tile_pos))
-        cx, cy = 0, 0
+        # cx, cy = nearest(self.project(self.player.tile_pos))
+        cx, cy = 500, 700
 
         # offset center point for player sprite
         cx += prepare.TILE_SIZE[0] // 2
@@ -72,11 +78,9 @@ class WorldState(State):
         # center the map on center of player sprite
         # must center map before getting sprite coordinates
         self.current_map.renderer.center((cx, cy))
-
         for e in self.entities:
             if isinstance(e, DrawInterface):
                 world_surfaces.extend(e.get_sprites(self.current_map.sprite_layer))
-
 
         # position the surfaces correctly
         # pyscroll expects surfaces in screen coords, so they are
@@ -102,7 +106,6 @@ class WorldState(State):
         # If we want to draw the collision map for debug purposes
         # if prepare.CONFIG.collision_map:
         #    self.debug_drawing(surface)
-
 
     def get_pos_from_tilepos(self, tile_position):
         cx, cy = self.current_map.renderer.get_center_offset()

@@ -73,7 +73,7 @@
   <object id="22" x="526.667" y="813.333"/>
   <object id="23" x="529.333" y="881.333"/>
   <object id="24" x="462.667" y="878.667"/>
-  <object id="25" x="462.667" y="817.333"/>
+  <object id="25" name="lefthand" type="entity" x="462.667" y="817.333"/>
   <object id="26" x="496" y="818.667"/>
  </objectgroup>
 </map>

@@ -1,8 +1,6 @@
 import os
 
-import pyganim as pyganim
-
-from app import config
+from app import config, pyganim as pyganim
 from app.asset_manager import load_and_scale
 from app.db import db
 from app.euclid import Point3, Vector3, proj, tile_distance, trunc
