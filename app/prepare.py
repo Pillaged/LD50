@@ -5,7 +5,8 @@ import pygame
 
 NATIVE_RESOLUTION = [960, 480]
 SCREEN_SIZE = [960, 480]
-
+TILE_SIZE = [32, 32]
+SCALE = 1
 LIBDIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 BASEDIR = sys.path[0]
@@ -39,5 +40,5 @@ def fetch(*args):
     path = os.path.join(BASEDIR, relative_path)
     if os.path.exists(path):
         return path
-
+    print(path)
     raise OSError(f"cannot load file {relative_path}")
