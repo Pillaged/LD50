@@ -6,7 +6,8 @@ from app.renderer import Renderer
 
 import pygame
 
-from app import prepare
+from app import asset_manager, prepare
+from app.collision_map import CollisionMap 
 from app.entity import ECS, DrawInterface, EventInterface, UpdateInterface, WallInterface
 from app.entity.controllable_ant import ControllableAnt, MainControllableAnt
 from app.entity.man import ManHead
@@ -23,6 +24,7 @@ class WorldState(State):
 
     renderer : Renderer
     ecs : ECS
+    collision_map: CollisionMap
     player : any
 
     def __init__(self, client):
@@ -59,6 +61,8 @@ class WorldState(State):
         super().startup(*args, **kwargs)
         self.renderer = Renderer(screen_size = prepare.SCREEN_SIZE, map_size=(1000,1000))
         self.ecs = ECS()
+
+        self.collision_map = asset_manager.load_collision_map("collision_map_1.png")
 
         dummy = Dummy()
         self.ecs.add_entity(dummy)

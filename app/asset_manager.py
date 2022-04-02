@@ -1,3 +1,4 @@
+from app.collision_map import CollisionMap
 import pygame
 import logging
 
@@ -20,7 +21,7 @@ def load_and_scale(filename):
 
 
 def transform_resource_filename(*filename):
-    """ Appends the resource folder name to a filename
+    """ Appends the asset folder name to a filename
     :param filename: String
     :rtype: basestring
     """
@@ -28,7 +29,7 @@ def transform_resource_filename(*filename):
 
 
 def load_image(filename):
-    """ Load image from the resources folder
+    """ Load image from the assets folder
     """
     filename = transform_resource_filename(filename)
     return pygame.image.load(filename)
@@ -51,9 +52,11 @@ def load_audio(filename):
         return DummySound()
 
 
-def load_tile_map(filename):
-    """ Load tilemap from the resources folder
+def load_collision_map(filename):
+    """ Load collision map from the resources folder
     """
-    filename = transform_resource_filename(filename)
-    data = pytmx.TiledMap(filename, pixelalpha=True)
+    filename = transform_resource_filename("assets", filename)
+    print("???", filename)
+    pygame.image.load(filename)
+    data = CollisionMap(filename)
     return data

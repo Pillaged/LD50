@@ -37,6 +37,11 @@ def fetch(*args):
     if os.path.exists(path):
         return path
 
+    path = os.path.join(BASEDIR,"", relative_path)
+    print(path)
+    if os.path.exists(path):
+        return path
+
     path = os.path.join(BASEDIR, relative_path)
     if os.path.exists(path):
         return path

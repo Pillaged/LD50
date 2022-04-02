@@ -9,6 +9,6 @@ def main():
     client = Client("Death or Taxes")
     client.auto_state_discovery()
     client.push_state("BackgroundState")
-    client.push_state("MenuState")
+    client.push_state("WorldState")
     client.main()
     pygame.quit()
