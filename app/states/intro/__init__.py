@@ -17,15 +17,15 @@ class IntroState(State):
 
     def update(self, time_delta):
         self.animations.update(time_delta)
-        self.timer -= time_delta
+        self.timer -= time_delta*10
         if self.timer <= 0:
             instance = self.client.replace_state("WorldState")
             instance.change_map(self.next_map)
 
-    def draw(self, surface):  # draw shit on surface after startup, main loop will render this automatically
+    def draw(self, surface):
         surface.blit(self.splash.get_sprites(None)[0][0], (0, 0))
 
-    def startup(self, **kwargs):  # when it's pushed for the first time, initializes things
+    def startup(self, **kwargs):
         pass
 
     def resume(self):
