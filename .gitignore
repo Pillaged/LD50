@@ -1,4 +1,10 @@
- # Byte-compiled / optimized / DLL files
+# Custom
+**/*.pem
+**/*.idea
+**/*.exe
+baddle_server
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
