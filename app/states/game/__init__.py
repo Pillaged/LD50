@@ -1,11 +1,13 @@
 import itertools
 import logging
+from telnetlib import EC
+from app.entity.dummy import Dummy
 from app.renderer import Renderer
 
 import pygame
 
 from app import prepare
-from app.entity import DrawInterface, EventInterface, UpdateInterface, WallInterface
+from app.entity import ECS, DrawInterface, EventInterface, UpdateInterface, WallInterface
 from app.entity.controllable_ant import ControllableAnt, MainControllableAnt
 from app.entity.man import ManHead
 from app.game import pairs
@@ -19,7 +21,9 @@ logger = logging.getLogger(__name__)
 
 class WorldState(State):
 
-    render : Renderer
+    renderer : Renderer
+    ecs : ECS
+    player : any
 
     def __init__(self, client):
         super().__init__(client)
@@ -28,7 +32,6 @@ class WorldState(State):
         super().update(time_delta)
 
     def draw(self, surface):
-        self.screen = surface
         self.map_drawing(surface)
 
     def process_event(self, event):
@@ -41,11 +44,12 @@ class WorldState(State):
             return None
 
         if event.button == Button.INTERACT and event.pressed:
-            self.player = [self.player[1], self.player[0]]
+            pass
 
-        for e in self.entities:
-            if isinstance(e, EventInterface):
-                e.event(event)
+        # TODO event entities
+        # for e in self.entities:
+        #     if isinstance(e, EventInterface):
+        #         e.event(event)
 
         if event.button == Button.RESET and event.pressed:
             # TODO
@@ -53,51 +57,27 @@ class WorldState(State):
 
     def startup(self, *args, **kwargs):
         super().startup(*args, **kwargs)
+        self.renderer = Renderer(screen_size = prepare.SCREEN_SIZE, map_size=(1000,1000))
+        self.ecs = ECS()
 
-        self.screen = self.client.screen
-        self.screen_rect = self.screen.get_rect()
-        self.renderer = Renderer(tuple(prepare.SCREEN_SIZE))
-        self.resolution = prepare.SCREEN_SIZE
-        self.tile_size = prepare.TILE_SIZE
+        dummy = Dummy()
+        self.ecs.add_entity(dummy)
 
-    def add_entity(self, entity):
-        entity.world = self
-        self.entities.append(entity)
-
-    def project(self, position):
-        return position[0] * self.tile_size[0], position[1] * self.tile_size[1]
 
     def map_drawing(self, surface):
-
-        # get player coords to center map
-        cx, cy = nearest(self.project(self.player[0].tile_pos))
-        # cx, cy = 0, 0
-
-        # offset center point for player sprite
-        cx += prepare.TILE_SIZE[0] // 2
-        cy += prepare.TILE_SIZE[1] // 2
-
         # center the map on center of player sprite
         # must center map before getting sprite coordinates
-        self.renderer.center((cx, cy))
+        self.renderer.center((100, 100))
 
-        # get list of surfaces to draw
-        # TODO
         world_surfaces = list()
-        for e in self.entities:
-            if isinstance(e, DrawInterface):
-                # list of (frame, pos, layer)
-                world_surfaces.extend(e.get_sprites(self.current_map.sprite_layer))
+        for e in self.ecs.get_draw():
+            world_surfaces.extend(e.get_sprites("0"))
 
         # position the surfaces correctly
-        # pyscroll expects surfaces in screen coords, so they are
         # converted from world to screen coords here
         screen_surfaces = list()
         for frame in world_surfaces:
             s, c, l = frame
-
-            # project to pixel/screen coords
-            c = self.get_pos_from_tilepos(c)
 
             # handle tall sprites
             # h = s.get_height()
@@ -108,7 +88,7 @@ class WorldState(State):
             screen_surfaces.append((s, c, l))
 
         # draw the map and sprites
-        self.rect = self.render.draw(surface, surface.get_rect(), screen_surfaces)
+        self.rect = self.renderer.draw(surface, surface.get_rect(), screen_surfaces)
 
         # If we want to draw the collision map for debug purposes
         if False:  # prepare.CONFIG.collision_map:

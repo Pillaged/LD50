@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from itertools import groupby
 from operator import itemgetter
 import pygame
@@ -5,12 +6,14 @@ from pygame import Rect
 
 class Renderer: 
 
-    screen_size: tuple[int, int]
     screen_center: tuple[int, int]
-    view_rect: Rect = Rect(0, 0, 0, 0)
+    view_rect: Rect 
+    map_rect: Rect
 
-    def __init__(self, screen_size=tuple[int, int]) -> None:
-        self.screen_size = screen_size
+    def __init__(self, screen_size:tuple[int, int], map_size: tuple[int, int]) -> None:
+        self.view_rect = Rect(0, 0, screen_size[0], screen_size[1])
+        self.map_rect = Rect(0, 0, map_size[0], map_size[1])
+        self.screen_center = (screen_size[0]/2, screen_size[1])
 
     # surface is screen
     # rect is sub area of surface to draw on
@@ -18,13 +21,13 @@ class Renderer:
     def draw(self, surface, rect, to_draw: list[tuple[pygame.Surface, tuple[float, float], int]]) -> None:
         with surface_clipping_context(surface, rect):
             self._clear_surface(surface, None)
-            ox, oy = -self._x_offset + rect.left, -self._y_offset + rect.top
+            ox, oy = rect.left, rect.top
 
             def sprite_sort(i: tuple[pygame.Surface, tuple[float, float], int]):
                 return i[2], i[1][1] + i[0].get_height()
 
 
-            to_draw.sort(sprite_sort)
+            to_draw.sort(key=sprite_sort)
             for _, group in groupby(to_draw, itemgetter(2)):
                 for i in group:   
                     x, y = i[1]         
@@ -47,6 +50,7 @@ class Renderer:
     def _clear_surface(self, surface :pygame.Surface, rect=None):
         surface.fill((0,0,0), rect)
 
+@contextmanager
 def surface_clipping_context(surface, clip):
     original = surface.get_clip()
     surface.set_clip(clip)

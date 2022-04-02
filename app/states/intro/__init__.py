@@ -20,7 +20,7 @@ class IntroState(State):
         self.timer -= time_delta*10
         if self.timer <= 0:
             instance = self.client.replace_state("WorldState")
-            instance.change_map(self.next_map)
+            #instance.change_map(self.next_map)
 
     def draw(self, surface):
         surface.blit(self.splash.get_sprites(None)[0][0], (0, 0))
