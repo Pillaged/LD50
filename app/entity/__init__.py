@@ -10,7 +10,8 @@ from threading import Thread, Lock
 
 class Entity:
     id: int = 0
-
+    def __init__(self, **kwargs):
+        pass
 class Movable:
     wants_to_move = None
     wants_to_move_direction = None
@@ -147,6 +148,6 @@ class ECS:
         return i
 
     def get_id(self) -> int:
-        counter += 1
-        id = counter 
+        self.counter += 1
+        id = self.counter 
         return id

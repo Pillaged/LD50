@@ -26,7 +26,6 @@ class Renderer:
             def sprite_sort(i: tuple[pygame.Surface, tuple[float, float], int]):
                 return i[2], i[1][1] + i[0].get_height()
 
-
             to_draw.sort(key=sprite_sort)
             for _, group in groupby(to_draw, itemgetter(2)):
                 for i in group:   

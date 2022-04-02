@@ -44,7 +44,7 @@ class IntroState(State):
 
 
 class SplashScreen(Entity, DrawInterface):
-
+    position = (0,0)
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.sprite_name = "clip"
@@ -54,8 +54,8 @@ class SplashScreen(Entity, DrawInterface):
     def get_sprite_state(self):
         return self.sprite_state
 
-    def get_tile_pos(self):
-        return self.tile_pos
+    def get_position(self):
+        return self.position
 
     def get_sprite_name(self):
         return self.sprite_name

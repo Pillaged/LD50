@@ -46,6 +46,7 @@ class MenuState(State):
 
 
 class SplashScreen(Entity, DrawInterface):
+    position = (0,0)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -58,8 +59,8 @@ class SplashScreen(Entity, DrawInterface):
     def register_ant(self, ant):
         self.ant = ant
 
-    def get_tile_pos(self):
-        return self.tile_pos
+    def get_position(self) -> tuple[float, float]:
+        return self.position
 
     def get_sprite_name(self):
         return self.sprite_name
