@@ -1,0 +1,25 @@
+{
+  "slug": "man",
+  "sprites": {
+    "lefthand": {
+      "file": "man/lefthand",
+      "animation": false
+    },
+    "righthand": {
+      "file": "man/righthand",
+      "animation": false
+    },
+    "leftleg": {
+      "file": "man/leftleg",
+      "animation": false
+    },
+    "rightleg": {
+      "file": "man/rightleg",
+      "animation": false
+    },
+    "head": {
+      "file": "man/head",
+      "animation": false
+    }
+  }
+}

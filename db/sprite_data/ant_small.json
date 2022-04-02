@@ -1,0 +1,15 @@
+{
+  "slug": "ant_small",
+  "sprites": {
+    "idle": {
+      "file": "ant/ant_small.000",
+      "animation": false
+    },
+    "idle_animation": {
+      "file": "ant/ant_small",
+      "animation": true,
+      "frames": 8,
+      "frame_duration": 0.2
+    }
+  }
+}
