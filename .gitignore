@@ -2,6 +2,7 @@
 **/*.pem
 **/*.idea
 **/*.exe
+.vscode/
 baddle_server
 
 # Byte-compiled / optimized / DLL files

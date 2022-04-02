@@ -79,7 +79,7 @@ class WorldState(State):
 
         # center the map on center of player sprite
         # must center map before getting sprite coordinates
-        self.current_map.renderer.center((cx, cy))
+        self.renderer.center((cx, cy))
 
         # get list of surfaces to draw
         # TODO
