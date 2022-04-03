@@ -57,6 +57,9 @@ class WorldState(State):
             # TODO
             pass
 
+        if event.button == Button.MOUSE_LEFT and event.pressed:
+            print(event)
+
     def startup(self, *args, **kwargs):
         super().startup(*args, **kwargs)
         self.renderer = Renderer(screen_size = prepare.SCREEN_SIZE, map_size=(1200,1200))
@@ -102,10 +105,6 @@ class WorldState(State):
             self.debug_drawing(surface)
 
     def debug_drawing(self, surface: pygame.Surface):
-        from pygame.gfxdraw import box
-
-        # We need to iterate over all collidable objects.  So, let's start
-        # with the walls/collision boxes.
         ox, oy = self.renderer.view_rect.left, self.renderer.view_rect.top
         surface.blit(self.collision_map.image, (-ox, -oy))
 

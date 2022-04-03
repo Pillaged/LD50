@@ -48,6 +48,9 @@ class Renderer:
     def get_center_offset(self):    
         return (-self.view_rect.centerx + self._half_width,
                 -self.view_rect.centery + self._half_height)
+
+    def get_world_position(self, screen_position: tuple[int,int]) -> tuple[int, int]:
+        return (screen_position + self.view_rect.left, screen_position + self.view_rect.top)
     
     def _clear_surface(self, surface :pygame.Surface, rect=None):
         surface.fill((0,0,0), rect)
