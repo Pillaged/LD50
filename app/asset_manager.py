@@ -56,7 +56,5 @@ def load_collision_map(filename):
     """ Load collision map from the resources folder
     """
     filename = transform_resource_filename("assets", filename)
-    print("???", filename)
-    pygame.image.load(filename)
     data = CollisionMap(filename)
     return data
