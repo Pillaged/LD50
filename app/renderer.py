@@ -21,7 +21,7 @@ class Renderer:
     def draw(self, surface, rect, to_draw: list[tuple[pygame.Surface, tuple[float, float], int]]) -> None:
         with surface_clipping_context(surface, rect):
             self._clear_surface(surface, None)
-            ox, oy = rect.left, rect.top
+            ox, oy = self.view_rect.left, self.view_rect.top
 
             def sprite_sort(i: tuple[pygame.Surface, tuple[float, float], int]):
                 return i[2], i[1][1] + i[0].get_height()
@@ -35,11 +35,14 @@ class Renderer:
     # sets the center of the screen
     def center(self, coords: tuple[int,int]):
         x, y = round(coords[0]), round(coords[1])
+        print(x,y)
         self.view_rect.center = x, y
 
         # prevents camera from moving outside bounds
         self.view_rect.clamp_ip(self.map_rect)
         self.screen_center = self.view_rect.center
+
+        print(self.view_rect)
 
     
     def get_center_offset(self):    

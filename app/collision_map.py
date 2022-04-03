@@ -1,7 +1,10 @@
 from PIL import Image
 from enum import Enum
 
+import pygame
+
 class CollisionMap:
+    image: pygame.Surface
     grid: list[list[int]]
     def __init__(self, filename: str):
         im = Image.open(filename)
@@ -12,10 +15,12 @@ class CollisionMap:
             for j in range(height):
                 self.grid[i][j] = get_collision(im.getpixel((i,j)))
 
+        self.image = pygame.image.load(filename)
+
 def get_collision(pixel: tuple[int, int, int]):
-    if pixel == (255,255,255):
+    if pixel == (0,0,0):
         return Collision.EMPTY
-    elif pixel == (0,0,0):
+    elif pixel == (255,0,0):
         return Collision.WALL
     else:
         return Collision.INVALID

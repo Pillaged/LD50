@@ -59,19 +59,22 @@ class WorldState(State):
 
     def startup(self, *args, **kwargs):
         super().startup(*args, **kwargs)
-        self.renderer = Renderer(screen_size = prepare.SCREEN_SIZE, map_size=(1000,1000))
+        self.renderer = Renderer(screen_size = prepare.SCREEN_SIZE, map_size=(1200,1200))
         self.ecs = ECS()
 
         self.collision_map = asset_manager.load_collision_map("collision_map_1.png")
 
         dummy = Dummy()
+        dummy.position = (200,200)
         self.ecs.add_entity(dummy)
+
+        self.renderer.center((600,300))
 
 
     def map_drawing(self, surface):
         # center the map on center of player sprite
         # must center map before getting sprite coordinates
-        self.renderer.center((100, 100))
+        # self.renderer.center((100, 100))
 
         world_surfaces = list()
         for e in self.ecs.get_draw():
@@ -90,25 +93,21 @@ class WorldState(State):
             #     c = nearest((c[0], c[1] - h // 2))
 
             screen_surfaces.append((s, c, l))
-
+        
         # draw the map and sprites
         self.rect = self.renderer.draw(surface, surface.get_rect(), screen_surfaces)
 
         # If we want to draw the collision map for debug purposes
-        if False:  # prepare.CONFIG.collision_map:
+        if True:  # prepare.CONFIG.collision_map:
             self.debug_drawing(surface)
 
-    def debug_drawing(self, surface):
+    def debug_drawing(self, surface: pygame.Surface):
         from pygame.gfxdraw import box
 
-        surface.lock()
         # We need to iterate over all collidable objects.  So, let's start
         # with the walls/collision boxes.
-        box_iter = list(map(self._collision_box_to_pgrect, self.collision_map))
-        # draw noc and wall collision tiles
-        red = (255, 0, 0, 128)
-        for item in box_iter:
-            box(surface, item, red)
+        ox, oy = self.renderer.view_rect.left, self.renderer.view_rect.top
+        surface.blit(self.collision_map.image, (-ox, -oy))
 
         # draw center lines to verify camera is correct
         w, h = surface.get_size()
@@ -116,4 +115,3 @@ class WorldState(State):
         pygame.draw.line(surface, (255, 50, 50), (cx, 0), (cx, h))
         pygame.draw.line(surface, (255, 50, 50), (0, cy), (w, cy))
 
-        surface.unlock()
