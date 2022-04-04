@@ -13,6 +13,6 @@ server:
 
 .PHONY: proto
 proto:
-	protoc --go_out server --twirp_out server --python_out=. --twirpy_out=. ./proto/baddle.proto
+	protoc --go_out server --twirp_out server --python_out=. --twirpy_out=. ./proto/rpc.proto
 # Python file baddle_twirp.py generates with url pointing to "twirp/.Baddle" instead of "twirp/Baddle"
 	cd tools && python proto_fix.py

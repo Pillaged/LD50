@@ -1,16 +1,12 @@
 package main
 
 import (
-	"github.com/Pillaged/Baddle/server/internal/words"
+	"github.com/Pillaged/LD50/server/internal/loader"
 )
 
 func main() {
-	words, err := words.New()
+	_, err := loader.New()
 	if err != nil {
 		return
-	}
-
-	for i := 1; i <= 10; i++ {
-		println(words.GetRandomWord())
 	}
 }

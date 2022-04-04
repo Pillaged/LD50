@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Pillaged/Baddle/server/internal/game"
-	"github.com/Pillaged/Baddle/server/internal/server"
-	"github.com/Pillaged/Baddle/server/internal/words"
-	"github.com/Pillaged/Baddle/server/rpc"
+	"github.com/Pillaged/LD50/server/internal/game"
+	"github.com/Pillaged/LD50/server/internal/server"
+	"github.com/Pillaged/LD50/server/internal/words"
+	"github.com/Pillaged/LD50/server/rpc"
 	"github.com/twitchtv/twirp"
 )
 
@@ -43,7 +43,7 @@ func main() {
 		Game:       game,
 	})
 
-	server := rpc.NewBaddleServer(service, NewLoggingServerHooks())
+	server := rpc.NewDeathOrTaxesServer(service, NewLoggingServerHooks())
 
 	if err := http.ListenAndServe(":2441", server); err != nil {
 		println(err.Error())

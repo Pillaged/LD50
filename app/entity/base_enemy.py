@@ -6,7 +6,7 @@ from app.asset_manager import load_and_scale
 from app.db import db
 from app.libraries.euclid import Point3, Vector3, proj, tile_distance, trunc
 from app.game import dirs2, dirs3, get_direction, butts2
-
+import app.libraries.euclid 
 class base_enemy(Entity, DrawInterface, UpdateInterface, EventInterface, Movable, WallInterface):
 
     def __init__(self, start_pos, end_pos, direction, mov_spd, gun_spd, **kwargs) -> None:

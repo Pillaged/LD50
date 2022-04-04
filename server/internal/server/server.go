@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"github.com/Pillaged/Baddle/server/rpc"
+	"github.com/Pillaged/LD50/server/rpc"
 	_ "github.com/twitchtv/twirp"
 )
 
@@ -14,7 +14,7 @@ type Config struct {
 	Game       Game
 }
 
-var _ rpc.Baddle = &Server{}
+// var _ rpc.DeathOrTaxes = &Server{}
 
 type Server struct {
 	wordGetter WordGetter
@@ -38,34 +38,14 @@ func New(cfg *Config) *Server {
 	}
 }
 
-func (s *Server) GetWord(ctx context.Context, req *rpc.GetWordReq) (*rpc.GetWordResp, error) {
-	return &rpc.GetWordResp{
-		Word: s.wordGetter.GetRandomWord(),
-	}, nil
+func (mt Server) GetCollisionMap(_ context.Context, _ *rpc.GetCollisionMapReq) (*rpc.GetCollisionMapResp, error) {
+	panic("not implemented") // TODO: Implement
 }
 
-func (s *Server) GetGameState(ctx context.Context, req *rpc.GetGameStateReq) (*rpc.GetGameStateResp, error) {
-	opponentWords, err := s.game.GetOpponentWords(req.Room, req.User)
-	if err != nil {
-		return nil, err
-	}
-	return &rpc.GetGameStateResp{
-		OpponentWordsCompleted: opponentWords,
-	}, nil
+func (mt Server) GetUpdates(_ context.Context, _ *rpc.GetUpdatesReq) (*rpc.GetUpdatesResp, error) {
+	panic("not implemented") // TODO: Implement
 }
 
-func (s *Server) JoinRoom(ctx context.Context, req *rpc.JoinRoomReq) (*rpc.JoinRoomResp, error) {
-	err := s.game.JoinRoom(req.Room, req.User)
-	if err != nil {
-		return nil, err
-	}
-	return &rpc.JoinRoomResp{}, nil
-}
-
-func (s *Server) Lose(ctx context.Context, req *rpc.LoseReq) (*rpc.LoseResp, error) {
-	err := s.game.Lose(req.Room, req.User)
-	if err != nil {
-		return nil, err
-	}
-	return &rpc.LoseResp{}, nil
+func (mt Server) PlayerMove(_ context.Context, _ *rpc.PlayerMoveReq) (*rpc.PlayerMoveResp, error) {
+	panic("not implemented") // TODO: Implement
 }

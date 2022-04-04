@@ -1,0 +1,51 @@
+syntax = "proto3";
+option go_package = "./rpc";
+
+service DeathOrTaxes {
+  rpc GetCollisionMap(GetCollisionMapReq) returns (GetCollisionMapResp);
+  rpc GetUpdates(GetUpdatesReq) returns (GetUpdatesResp);
+  rpc PlayerMove(PlayerMoveReq) returns (PlayerMoveResp);
+}
+
+message GetCollisionMapReq {
+  ClientInfo client_info = 1;
+}
+
+message GetCollisionMapResp {
+  int64 width  = 1;
+  int64 height = 2;
+
+  enum Collision {
+    EMPTY = 0;
+    WALL = 1;
+  }
+
+  repeated Collision data = 3;
+}
+
+message GetUpdatesReq {
+  ClientInfo client_info = 1;
+}
+
+message GetUpdatesResp {
+  string word = 1;
+}
+
+message PlayerMoveReq {
+  ClientInfo client_info = 1;
+  Vec2 position = 2;
+}
+
+message PlayerMoveResp {
+  string word = 1;
+}
+
+message ClientInfo {
+  string user = 1;
+  string room = 2; 
+}
+
+message Vec2 {
+  int64 x = 1;
+  int64 y = 2;  
+}

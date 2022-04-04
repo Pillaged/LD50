@@ -2,6 +2,7 @@ import itertools
 import logging
 from telnetlib import EC
 from app.entity.dummy import Dummy
+from app.pathfinding import dijkstra
 from app.renderer import Renderer
 
 import pygame
@@ -58,7 +59,7 @@ class WorldState(State):
             pass
 
         if event.button == Button.MOUSE_LEFT and event.pressed:
-            print(event)
+            print(self.renderer.get_world_position(event.value))
 
     def startup(self, *args, **kwargs):
         super().startup(*args, **kwargs)
@@ -67,11 +68,14 @@ class WorldState(State):
 
         self.collision_map = asset_manager.load_collision_map("collision_map_1.png")
 
+        path = dijkstra((60,60), (340, 190), (32,32), self.collision_map.grid)
+        self.path = path
+
         dummy = Dummy()
-        dummy.position = (200,200)
+        dummy.position = (40,40)
         self.ecs.add_entity(dummy)
 
-        self.renderer.center((600,300))
+        self.renderer.center((0,0))
 
 
     def map_drawing(self, surface):
@@ -99,6 +103,14 @@ class WorldState(State):
         
         # draw the map and sprites
         self.rect = self.renderer.draw(surface, surface.get_rect(), screen_surfaces)
+
+        # demo pathfinding
+        if True:
+            ox, oy = self.renderer.view_rect.left, self.renderer.view_rect.top
+            for point in self.path:
+                x, y = -ox + point[0], -oy + point[1]
+                pygame.draw.rect(surface, (0, 255, 0), (x,y,32,32))
+                pygame.draw.rect(surface, (0, 0, 255), (x,y,2,2))
 
         # If we want to draw the collision map for debug purposes
         if True:  # prepare.CONFIG.collision_map:
